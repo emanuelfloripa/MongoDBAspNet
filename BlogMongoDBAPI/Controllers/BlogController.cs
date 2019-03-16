@@ -15,13 +15,16 @@ namespace BlogMongoDBAPI.Controllers
 
         private readonly BlogService _blogService;
 
+        public PostController PostController { get; private set; }
+
         public BlogController()
         {
             var conn = System.Configuration.ConfigurationManager.ConnectionStrings[Consts.ConnStringName].ConnectionString;
             _blogService = new BlogService(conn);
+            this.PostController = new PostController(conn);
         }
 
-        public IEnumerable<BlogViewModels> Get()
+        public IEnumerable<BlogModel> Get()
         {
             var blog = _blogService.Get();
             //if (blog == null)
@@ -29,17 +32,17 @@ namespace BlogMongoDBAPI.Controllers
             return blog;
         }
 
-        public BlogViewModels Get(string id)
+        public BlogModel Get(string id)
         {
             return _blogService.Get(id);
         }
 
-        public void Post([FromBody]BlogViewModels value)
+        public void Post([FromBody]BlogModel value)
         {
             _blogService.Insert(value);
         }
 
-        public int Put(string id, [FromBody]BlogViewModels value)
+        public int Put(string id, [FromBody]BlogModel value)
         {
             var result = _blogService.Update(id, value);
             return (int)result.ModifiedCount;

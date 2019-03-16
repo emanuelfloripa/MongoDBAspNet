@@ -14,7 +14,7 @@ namespace BlogMongoDBAPI.Models
      * 
      */
 
-    public class BlogViewModels
+    public class BlogModel
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -26,7 +26,8 @@ namespace BlogMongoDBAPI.Models
         [BsonElement("Description")]
         public string Description { get; set; }
 
-
+        [BsonElement("Posts")]
+        public List<PostModel> Posts { get; set; }
 
     }
 }

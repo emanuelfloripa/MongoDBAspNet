@@ -11,7 +11,7 @@ namespace BlogMongoDBAPI.Services
     public class BlogService
     {
 
-        private readonly IMongoCollection<BlogViewModels> _blogs;
+        private readonly IMongoCollection<BlogModel> _blogs;
 
         //public BlogService(IConfiguration config)
         public BlogService(string conn)
@@ -19,33 +19,33 @@ namespace BlogMongoDBAPI.Services
             //var client = new MongoClient(config.GetConnectionString("BlogStoreDB"));
             var client = new MongoClient(conn);
             var dataBase = client.GetDatabase(Consts.DBName);
-            _blogs = dataBase.GetCollection<BlogViewModels>("Blog");
+            _blogs = dataBase.GetCollection<BlogModel>("Blog");
         }
 
-        public List<BlogViewModels> Get()
+        public List<BlogModel> Get()
         {
             return _blogs.Find(blog => true).ToList();
         }
 
-        public BlogViewModels Get(string id)
+        public BlogModel Get(string id)
         {
-            return _blogs.Find<BlogViewModels>(blog => blog.Id == id).FirstOrDefault();
+            return _blogs.Find<BlogModel>(blog => blog.Id == id).FirstOrDefault();
         }
 
-        public BlogViewModels Insert(BlogViewModels blog)
+        public BlogModel Insert(BlogModel blog)
         {
             _blogs.InsertOne(blog);
             return blog;
         }
 
-        public ReplaceOneResult Update(string id, BlogViewModels blogIn)
+        public ReplaceOneResult Update(string id, BlogModel blogIn)
         {
             blogIn.Id = id;
             var result = _blogs.ReplaceOne(blog => blog.Id == id, blogIn);
             return result;
         }
 
-        public void Remove(BlogViewModels blogIn)
+        public void Remove(BlogModel blogIn)
         {
             _blogs.DeleteOne(blog => blog.Id == blogIn.Id);
         }

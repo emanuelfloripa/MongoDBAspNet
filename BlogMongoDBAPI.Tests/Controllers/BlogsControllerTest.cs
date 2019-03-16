@@ -50,13 +50,25 @@ namespace BlogMongoDBAPI.Tests.Controllers
             controller.Post(blog);
         }
 
-        private BlogViewModels CreateNewBlog()
+        public static BlogModel CreateNewBlog()
         {
-            return new BlogViewModels
+            return new BlogModel
             {
                 Owner = "Teste" + DateTime.Now.ToString("yyMMdd-hhmmss"),
-                Description = "descrição " + DateTime.Now.ToString("yyMMdd-hhmmss")
+                Description = "descrição " + DateTime.Now.ToString("yyMMdd-hhmmss"),
+                Posts = new List<PostModel> {
+                    new PostModel{Datahora= DateTime.Now, Secoes = 
+                        new List<SecaoModel>{ },Titulo = "new post" + DateTime.Now.ToString("yyMMdd-hhmmss")
+                } }
             };
+        }
+
+        [TestMethod]
+        public void PostController()
+        {
+            BlogController blog = new BlogController();
+            PostController post = blog.PostController;
+            Assert.IsNotNull(post);
         }
 
         [TestMethod]

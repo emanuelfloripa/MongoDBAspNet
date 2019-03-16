@@ -9,17 +9,19 @@ namespace BlogMongoDBAPI.Models
 {
     public class PostModel
     {
-
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
+        [BsonElement("Titulo")]
+        [BsonRequired]
+        public string Titulo { get; set; }
+
         [BsonElement("DataHora")]
+        [BsonRequired]
         public DateTime Datahora { get; set; }
 
-        [BsonElement("Description")]
-        public string Description { get; set; }
-
-
+        [BsonElement("Secoes")]
+        public List<SecaoModel> Secoes { get; set; }        
     }
 }
