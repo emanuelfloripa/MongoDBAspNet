@@ -48,7 +48,8 @@ namespace BlogMongoDBAPI.Tests.Controllers
         public void GetListNotNull()
         {
             var ctr = Controller();
-            var lista = ctr.Get();
+            var blog = GetOneBlog();
+            var lista = ctr.Get(blog.Id);
             Assert.IsNotNull(lista);
         }
 
@@ -56,11 +57,12 @@ namespace BlogMongoDBAPI.Tests.Controllers
         public void GetListWith3Post()
         {
             var ctr = Controller();
-            ctr.Post(CreateNewPost());
-            ctr.Post(CreateNewPost());
-            ctr.Post(CreateNewPost());
+            var idBlog = GetOneBlog().Id;
+            ctr.Post(idBlog, CreateNewPost());
+            ctr.Post(idBlog, CreateNewPost());
+            ctr.Post(idBlog, CreateNewPost());
 
-            List<PostModel> lista = ctr.Get();
+            List<PostModel> lista = ctr.Get(idBlog);
 
             Assert.IsNotNull(lista);
             Assert.IsTrue(lista.Count >= 3);
@@ -72,10 +74,11 @@ namespace BlogMongoDBAPI.Tests.Controllers
         {
             var ctr = Controller();
             var post = CreateNewPost();
-            ctr.Post(post);
+            var idBlog = GetOneBlog().Id;
+            ctr.Post(idBlog, post);
 
             string id = post.Id;
-            var p2 = ctr.Get(id);
+            var p2 = ctr.Get(idBlog, id);
 
             Assert.IsTrue(post.Id == p2.Id);
         }
@@ -84,10 +87,11 @@ namespace BlogMongoDBAPI.Tests.Controllers
         public void GetByIdIfExists()
         {
             var ctr = Controller();
-            List<PostModel> lista = ctr.Get();
+            var idBlog = GetOneBlog().Id;
+            List<PostModel> lista = ctr.Get(idBlog);
             var onePost = lista.FirstOrDefault();
             string id = onePost.Id;
-            var p2 = ctr.Get(id);
+            var p2 = ctr.Get(idBlog, id);
 
             Assert.IsTrue(onePost.Id == p2.Id);
         }
@@ -97,10 +101,11 @@ namespace BlogMongoDBAPI.Tests.Controllers
         {
             var ctr = Controller();
             var post = CreateNewPost();
-            ctr.Post(post);
+            var idBlog = GetOneBlog().Id;
+            ctr.Post(idBlog, post);
 
             var id = post.Id;
-            var p2 = ctr.Get(id);
+            var p2 = ctr.Get(idBlog, id);
 
             Assert.IsTrue(post.Id == p2.Id);
         }
@@ -110,7 +115,7 @@ namespace BlogMongoDBAPI.Tests.Controllers
             return new PostModel
             {
                 Titulo = "Teste" + DateTime.Now.ToString("yyMMdd-hhmmss"),
-                Datahora = DateTime.Now,
+                Datahora = DateTime.Now,                
                 Secoes = CreateSecoes()
             };
         }
@@ -124,21 +129,32 @@ namespace BlogMongoDBAPI.Tests.Controllers
         public void Put()
         {
             var ctr = Controller();
-            var post = ctr.Get().FirstOrDefault();
-            
 
-            //Assert.AreEqual(count, 1);
+            var blog = GetOneBlog();
+            var idBlog = blog.Id;
 
-            //Assert.AreEqual(b1.Id, b2.Id);
-            //Assert.AreNotEqual(b1.Owner, b3.Owner);
+            while (blog.Posts.Count < 2)
+            {
+                var p = CreateNewPost();
+                ctr.Post(idBlog, p);
+            }
+
+            var post = ctr.Get(idBlog).FirstOrDefault();
+
+            var newTitulo = "novo título alterado" + DateTime.Now.ToLongTimeString();
+            post.Titulo = newTitulo;
+            ctr.Put(idBlog, post);
+
+            var p2 = ctr.Get(idBlog).FirstOrDefault();
+            Assert.AreEqual(p2.Titulo, newTitulo);
         }
 
         [TestMethod]
         public void Get()
         {
             var ctr = Controller();
-
-            var posts = ctr.Get();
+            var idBlog = GetOneBlog().Id;
+            var posts = ctr.Get(idBlog);
             Assert.IsNotNull(posts);
             Assert.IsTrue(posts.Count() > 0);
 

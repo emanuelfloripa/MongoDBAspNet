@@ -7,42 +7,24 @@ namespace BlogMongoDBAPI.Services
 {
     internal class PostBlogService
     {
-        //private readonly IMongoCollection<PostModel> _db;
-        BlogModel _blog;
 
-        public PostBlogService(BlogModel blog)
+        private readonly IMongoCollection<PostModel> _db;
+
+        public PostBlogService(string conn)
         {
-            //var client = new MongoClient(conn);
-            //var dataBase = client.GetDatabase(Consts.DBName);
-            //_db = dataBase.GetCollection<PostModel>("Posts");
-            _blog = blog;
+            var client = new MongoClient(conn);
+            var dataBase = client.GetDatabase(Consts.DBName);
+            _db = dataBase.GetCollection<PostModel>("Posts");
         }
 
-        public List<PostModel> Get()
+        public List<PostModel> Get(string idBlog)
         {
-            //return _db.Find(post => true).ToList();
-            return _blog.Posts;
+            return _db.Find<PostModel>(post => post.idBlog == idBlog).ToList();
         }
 
-        public PostModel Get(string id)
+        public PostModel Get(string idBlog, string id)
         {
-            return null;
-            //return _db.Find<PostModel>(post => post.Id == id).FirstOrDefault();
-        }
-
-        internal void Post(PostModel p)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal void Put(PostModel post)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal void Delete(string id)
-        {
-            throw new NotImplementedException();
+            return _db.Find<PostModel>(post => post.idBlog == idBlog).FirstOrDefault();
         }
 
         /// <summary>
@@ -50,10 +32,10 @@ namespace BlogMongoDBAPI.Services
         /// </summary>
         /// <param name="post"></param>
         /// <returns></returns>
-        public PostModel Insert(PostModel post)
+        internal void Insert(string idBlog, PostModel p)
         {
-            //_db.InsertOne(post);
-            return post;
+            p.idBlog = idBlog;
+            _db.InsertOne(p);
         }
 
         /// <summary>
@@ -62,28 +44,48 @@ namespace BlogMongoDBAPI.Services
         /// <param name="id"></param>
         /// <param name="postIn"></param>
         /// <returns></returns>
-        public ReplaceOneResult Update(string id, PostModel postIn)
+        internal int Update(string idBlog, PostModel p)
         {
-            postIn.Id = id;
-           // var result = _db.ReplaceOne(blog => blog.Id == id, postIn);
-            return null;
+            var result = _db.ReplaceOne(post => post.Id == p.Id, p);
+            return (int)result.ModifiedCount;
         }
 
-        /// <summary>
-        /// Remove um registro de Post do Blog
-        /// </summary>
-        /// <param name="post"></param>
-        public void Remove(PostModel post)
-        {
-            //_db.DeleteOne(blog => blog.Id == post.Id);
-        }
-        /// <summary>
-        /// Remove um registro de Post do blog
-        /// </summary>
-        /// <param name="id"></param>
         public void Remove(string id)
         {
-            //_db.DeleteOne(blog => blog.Id == id);
+            _db.DeleteOne(post => post.Id == id);
         }
+
+        public void AddSecao(PostModel post, SecaoModel secao)
+        {
+            post.Secoes.Add(secao);
+            Update(post.idBlog, post);
+        }
+
+        public SecaoModel GetSecao(PostModel post, string id )
+        {
+            var secao = post.Secoes.Find(p => p.Id == id);
+            return secao;
+        }
+
+        public int IndexOfSecaoID(PostModel post, string idSecao)
+        {
+            var index = post.Secoes.FindIndex(secao => secao.Id == idSecao);
+            return index;
+        }
+
+        public void UpdateSecao(PostModel post, SecaoModel secao, string idSecao)
+        {
+            var index = IndexOfSecaoID(post, idSecao);
+            post.Secoes[index] = secao;
+            Update(post.idBlog, post);
+        }
+
+        public void RemoveSecao(PostModel post, string idSecao)
+        {
+            var index = IndexOfSecaoID(post, idSecao);
+            post.Secoes.RemoveAt(index);
+            Update(post.idBlog, post);
+        }
+
     }
 }

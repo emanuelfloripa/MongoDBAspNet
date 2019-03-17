@@ -24,7 +24,7 @@ namespace BlogMongoDBAPI.Controllers
             this.PostController = new PostController(conn);
         }
 
-        public IEnumerable<BlogModel> Get()
+        public List<BlogModel> Get()
         {
             var blog = _blogService.Get();
             //if (blog == null)
@@ -44,8 +44,7 @@ namespace BlogMongoDBAPI.Controllers
 
         public int Put(string id, [FromBody]BlogModel value)
         {
-            var result = _blogService.Update(id, value);
-            return (int)result.ModifiedCount;
+            return _blogService.Update(id, value);
 
         }
 

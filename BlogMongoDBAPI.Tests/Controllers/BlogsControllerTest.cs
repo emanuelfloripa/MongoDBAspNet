@@ -56,6 +56,7 @@ namespace BlogMongoDBAPI.Tests.Controllers
             {
                 Owner = "Teste" + DateTime.Now.ToString("yyMMdd-hhmmss"),
                 Description = "descrição " + DateTime.Now.ToString("yyMMdd-hhmmss"),
+                Password = "!@#$!@#!@#$%!#@$%!#@$#@$",
                 Posts = new List<PostModel> {
                     new PostModel{Datahora= DateTime.Now, Secoes = 
                         new List<SecaoModel>{ },Titulo = "new post" + DateTime.Now.ToString("yyMMdd-hhmmss")

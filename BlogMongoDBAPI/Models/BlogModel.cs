@@ -21,12 +21,18 @@ namespace BlogMongoDBAPI.Models
         public string Id { get; set; }  
 
         [BsonElement("Owner")]
+        [BsonRequired]
         public string Owner { get; set; }
+
+        [BsonElement("Password")]
+        [BsonRequired]
+        public string Password { get; set; }
 
         [BsonElement("Description")]
         public string Description { get; set; }
 
         [BsonElement("Posts")]
+        [BsonRequired]
         public List<PostModel> Posts { get; set; }
 
     }

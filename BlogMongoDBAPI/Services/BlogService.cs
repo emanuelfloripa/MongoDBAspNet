@@ -38,11 +38,11 @@ namespace BlogMongoDBAPI.Services
             return blog;
         }
 
-        public ReplaceOneResult Update(string id, BlogModel blogIn)
+        public int Update(string id, BlogModel blogIn)
         {
             blogIn.Id = id;
             var result = _blogs.ReplaceOne(blog => blog.Id == id, blogIn);
-            return result;
+            return (int)result.ModifiedCount;
         }
 
         public void Remove(BlogModel blogIn)
