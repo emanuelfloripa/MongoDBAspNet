@@ -9,10 +9,39 @@ namespace BlogMongoDBAPI.Models
 {
     public class PostModel
     {
+
+        public PostModel()
+        {
+            Secoes = new List<SecaoModel>();
+        }
+
+        public SecaoModel getSecao(string id)
+        {
+            var secao = this.Secoes.Find(s => s.Id == id);
+            return secao;
+        }
+
+        public string addSecao(SecaoModel secao)
+        {
+            if (secao.Id == null)
+                secao.Id = ObjectId.GenerateNewId().ToString();
+            Secoes.Add(secao);
+            return secao.Id;
+        }
+
+        public bool removeSecao(string id)
+        {
+            var secao = this.Secoes.Find(s => s.Id == id);
+            if (secao == null)
+                return false;
+
+            return Secoes.Remove(secao);
+        }
+
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-        
+
         [BsonElement("idBlog")]
         [BsonRequired]
         public ObjectId idBlog { get; set; }
@@ -26,6 +55,6 @@ namespace BlogMongoDBAPI.Models
         public DateTime Datahora { get; set; }
 
         [BsonElement("Secoes")]
-        public List<SecaoModel> Secoes { get; set; }        
+        public List<SecaoModel> Secoes { get; set; }
     }
 }

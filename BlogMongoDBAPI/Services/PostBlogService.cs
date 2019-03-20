@@ -72,39 +72,47 @@ namespace BlogMongoDBAPI.Services
             return result.DeletedCount == 1;
         }
 
-        public string AddSecao(PostModel post, SecaoModel secao)
-        {
-            secao.Id = ObjectId.GenerateNewId().ToString();
-            post.Secoes.Add(secao);
-            Update(post.idBlog, post);
-            return secao.Id;
-        }
+        //public string AddSecao(PostModel post, SecaoModel secao)
+        //{
+        //    secao.Id = ObjectId.GenerateNewId().ToString();
+        //    post.Secoes.Add(secao);
+        //    Update(post.idBlog, post);
+        //    return secao.Id;
+        //}
 
-        public SecaoModel GetSecao(PostModel post, string id)
-        {
-            var secao = post.Secoes.Find(p => p.Id == id);
-            return secao;
-        }
+        //public string AddSecao(SecaoModel secaoPai, SecaoModel secaoFilho)
+        //{
+        //    secao.Id = ObjectId.GenerateNewId().ToString();
+        //    post.Secoes.Add(secao);
+        //    Update(post.idBlog, post);
+        //    return secao.Id;
+        //}
 
-        public int IndexOfSecaoID(PostModel post, string idSecao)
-        {
-            var index = post.Secoes.FindIndex(secao => secao.Id == idSecao);
-            return index;
-        }
+        //public SecaoModel GetSecao(PostModel post, string id)
+        //{
+        //    var secao = post.Secoes.Find(p => p.Id == id);
+        //    return secao;
+        //}
 
-        public void UpdateSecao(PostModel post, SecaoModel secao, string idSecao)
-        {
-            var index = IndexOfSecaoID(post, idSecao);
-            post.Secoes[index] = secao;
-            Update(post.idBlog, post);
-        }
+        //public int IndexOfSecaoID(PostModel post, string idSecao)
+        //{
+        //    var index = post.Secoes.FindIndex(secao => secao.Id == idSecao);
+        //    return index;
+        //}
 
-        public void RemoveSecao(PostModel post, string idSecao)
-        {
-            var index = IndexOfSecaoID(post, idSecao);
-            post.Secoes.RemoveAt(index);
-            Update(post.idBlog, post);
-        }
+        //public void UpdateSecao(PostModel post, SecaoModel secao, string idSecao)
+        //{
+        //    var index = IndexOfSecaoID(post, idSecao);
+        //    post.Secoes[index] = secao;
+        //    Update(post.idBlog, post);
+        //}
+
+        //public void RemoveSecao(PostModel post, string idSecao)
+        //{
+        //    var index = IndexOfSecaoID(post, idSecao);
+        //    post.Secoes.RemoveAt(index);
+        //    Update(post.idBlog, post);
+        //}
 
     }
 }

@@ -59,14 +59,14 @@ namespace BlogMongoDBAPI.Controllers
         /// <param name="idBlog"></param>
         /// <param name="idPost"></param>
         /// <returns>TRUE se achou e conseguiu deletar o registro</returns>
-        public bool Delete(string idBlog, string idPost)
+        public bool Remove(string idBlog, string idPost)
         {
             return _service.Remove(idPost);
         }
 
-        public string AddSecao(PostModel post, SecaoModel secao)
-        {
-            return _service.AddSecao(post, secao);
-        }
+        //public string AddSecao(PostModel post, SecaoModel secao)
+        //{
+        //    return _service.AddSecao(post, secao);
+        //}
     }
 }
