@@ -15,7 +15,7 @@ namespace BlogMongoDBAPI.Models
         
         [BsonElement("idBlog")]
         [BsonRequired]
-        public string idBlog { get; set; }
+        public ObjectId idBlog { get; set; }
 
         [BsonElement("Titulo")]
         [BsonRequired]

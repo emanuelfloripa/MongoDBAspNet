@@ -1,5 +1,6 @@
 ﻿using BlogMongoDBAPI.Models;
 using BlogMongoDBAPI.Services;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,40 +16,57 @@ namespace BlogMongoDBAPI.Controllers
 
         public PostController(string conn)
         {
-            //var conn = System.Configuration.ConfigurationManager.ConnectionStrings[Consts.ConnStringName].ConnectionString;
-            //_service = new PostBlogService(conn);
+            _service = new PostBlogService(conn);
         }
 
         // GET: api/Post
         public List<PostModel> Get(string idBlog)
         {
-            return _service.Get(idBlog);
-            return null;
+            return _service.Get(new ObjectId( idBlog));
         }
 
         // GET: api/Post/5
         public PostModel Get(string idBlog, string id)
         {
-            return _service.Get(idBlog, id);
+            return _service.Get(new ObjectId(idBlog), id);
         }
 
-        // POST: api/Post
-        public void Post(string idBlog, PostModel p)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idBlog"></param>
+        /// <param name="p"></param>
+        /// <returns>ID da postagem inserida</returns>
+        public string Post(string idBlog, PostModel p)
         {
-            _service.Insert(idBlog, p);
+            return _service.Insert(idBlog, p);
         }
 
-        // PUT: api/Post/5
-        public void Put(string idBlog, PostModel post)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idBlog"></param>
+        /// <param name="post"></param>
+        /// <returns>Update realizado TRUE</returns>
+        public bool Put(string idBlog, PostModel post)
         {
-            _service.Update(idBlog, post);
+            return _service.Update(idBlog, post);
         }
 
-        // DELETE: api/Post/5
-        public void Delete(string idBlog, string id)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idBlog"></param>
+        /// <param name="idPost"></param>
+        /// <returns>TRUE se achou e conseguiu deletar o registro</returns>
+        public bool Delete(string idBlog, string idPost)
         {
-            _service.Remove(id);
+            return _service.Remove(idPost);
         }
 
+        public string AddSecao(PostModel post, SecaoModel secao)
+        {
+            return _service.AddSecao(post, secao);
+        }
     }
 }

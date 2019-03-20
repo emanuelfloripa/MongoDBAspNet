@@ -18,7 +18,7 @@ namespace BlogMongoDBAPI.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }  
+        public ObjectId _Id { get; set; }  
 
         [BsonElement("Owner")]
         [BsonRequired]

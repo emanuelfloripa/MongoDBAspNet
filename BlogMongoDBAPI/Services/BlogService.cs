@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using BlogMongoDBAPI.Models;
 using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace BlogMongoDBAPI.Services
@@ -29,7 +30,8 @@ namespace BlogMongoDBAPI.Services
 
         public BlogModel Get(string id)
         {
-            return _blogs.Find<BlogModel>(blog => blog.Id == id).FirstOrDefault();
+            ObjectId oid = new ObjectId(id);
+            return _blogs.Find<BlogModel>(blog => blog._Id == oid).FirstOrDefault();
         }
 
         public BlogModel Insert(BlogModel blog)
@@ -40,19 +42,21 @@ namespace BlogMongoDBAPI.Services
 
         public int Update(string id, BlogModel blogIn)
         {
-            blogIn.Id = id;
-            var result = _blogs.ReplaceOne(blog => blog.Id == id, blogIn);
+            ObjectId oid = new ObjectId(id);
+            blogIn._Id = oid;
+            var result = _blogs.ReplaceOne(blog => blog._Id == oid, blogIn);
             return (int)result.ModifiedCount;
         }
 
         public void Remove(BlogModel blogIn)
         {
-            _blogs.DeleteOne(blog => blog.Id == blogIn.Id);
+            _blogs.DeleteOne(blog => blog._Id == blogIn._Id);
         }
 
         public void Remove(string id)
         {
-            _blogs.DeleteOne(blog => blog.Id == id);
+            ObjectId oid = new ObjectId(id);
+            _blogs.DeleteOne(blog => blog._Id == oid);
         }
     }
 }

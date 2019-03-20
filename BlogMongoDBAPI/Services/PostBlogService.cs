@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using BlogMongoDBAPI.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace BlogMongoDBAPI.Services
@@ -17,25 +19,28 @@ namespace BlogMongoDBAPI.Services
             _db = dataBase.GetCollection<PostModel>("Posts");
         }
 
-        public List<PostModel> Get(string idBlog)
+        public List<PostModel> Get(ObjectId idBlog)
         {
             return _db.Find<PostModel>(post => post.idBlog == idBlog).ToList();
         }
 
-        public PostModel Get(string idBlog, string id)
+        public PostModel Get(MongoDB.Bson.ObjectId idBlog, string id)
         {
-            return _db.Find<PostModel>(post => post.idBlog == idBlog).FirstOrDefault();
+            var lista = _db.Find<PostModel>(post => (post.idBlog == idBlog) && (post.Id == id));
+            return lista.First();
         }
 
         /// <summary>
         /// Insert de um novo post em um blog
         /// </summary>
         /// <param name="post"></param>
-        /// <returns></returns>
-        internal void Insert(string idBlog, PostModel p)
+        /// <returns>O ID do Post inserido</returns>
+        internal string Insert(string idBlog, PostModel p)
         {
-            p.idBlog = idBlog;
+            ObjectId oid = new ObjectId(idBlog);
+            p.idBlog = oid;
             _db.InsertOne(p);
+            return p.Id;
         }
 
         /// <summary>
@@ -44,24 +49,38 @@ namespace BlogMongoDBAPI.Services
         /// <param name="id"></param>
         /// <param name="postIn"></param>
         /// <returns></returns>
-        internal int Update(string idBlog, PostModel p)
+        internal bool Update(string idBlog, PostModel p)
+        {
+            ObjectId oid = new ObjectId(idBlog);
+            return Update(oid, p);
+        }
+
+        internal bool Update(ObjectId idBlog, PostModel p)
         {
             var result = _db.ReplaceOne(post => post.Id == p.Id, p);
-            return (int)result.ModifiedCount;
+            return result.ModifiedCount == 1;
         }
 
-        public void Remove(string id)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>TRUE se achou e conseguiu deletar o registro</returns>
+        public bool Remove(string id)
         {
-            _db.DeleteOne(post => post.Id == id);
+            var result = _db.DeleteOne(post => post.Id == id);
+            return result.DeletedCount == 1;
         }
 
-        public void AddSecao(PostModel post, SecaoModel secao)
+        public string AddSecao(PostModel post, SecaoModel secao)
         {
+            secao.Id = ObjectId.GenerateNewId().ToString();
             post.Secoes.Add(secao);
             Update(post.idBlog, post);
+            return secao.Id;
         }
 
-        public SecaoModel GetSecao(PostModel post, string id )
+        public SecaoModel GetSecao(PostModel post, string id)
         {
             var secao = post.Secoes.Find(p => p.Id == id);
             return secao;
