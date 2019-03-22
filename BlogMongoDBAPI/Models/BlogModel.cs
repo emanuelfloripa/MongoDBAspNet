@@ -17,12 +17,10 @@ namespace BlogMongoDBAPI.Models
     public class BlogModel
     {
         [BsonId]
-        [System.ComponentModel.DataAnnotations.Key]
-        [System.ComponentModel.DataAnnotations.Schema.Column(Order = 0)]
         [BsonRepresentation(BsonType.ObjectId)]
         public string _Id { get; set; }  
 
-        [BsonElement("Owner")]
+        [BsonElement("OwnerName")]
         [BsonRequired]
         public string OwnerName { get; set; }
 
@@ -36,10 +34,6 @@ namespace BlogMongoDBAPI.Models
 
         [BsonElement("Description")]
         public string Description { get; set; }
-
-        //[BsonElement("Posts")]
-        //[BsonRequired]
-        //public List<PostModel> Posts { get; set; }
 
     }
 }
