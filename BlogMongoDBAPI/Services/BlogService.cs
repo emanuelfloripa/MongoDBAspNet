@@ -30,8 +30,7 @@ namespace BlogMongoDBAPI.Services
 
         public BlogModel Get(string id)
         {
-            ObjectId oid = new ObjectId(id);
-            return _blogs.Find<BlogModel>(blog => blog._Id == oid).FirstOrDefault();
+            return _blogs.Find<BlogModel>(blog => blog._Id == id).FirstOrDefault();
         }
 
         public BlogModel Insert(BlogModel blog)
@@ -42,9 +41,8 @@ namespace BlogMongoDBAPI.Services
 
         public int Update(string id, BlogModel blogIn)
         {
-            ObjectId oid = new ObjectId(id);
-            blogIn._Id = oid;
-            var result = _blogs.ReplaceOne(blog => blog._Id == oid, blogIn);
+            blogIn._Id = id;
+            var result = _blogs.ReplaceOne(blog => blog._Id == id, blogIn);
             return (int)result.ModifiedCount;
         }
 
@@ -55,8 +53,7 @@ namespace BlogMongoDBAPI.Services
 
         public void Remove(string id)
         {
-            ObjectId oid = new ObjectId(id);
-            _blogs.DeleteOne(blog => blog._Id == oid);
+            _blogs.DeleteOne(blog => blog._Id == id);
         }
     }
 }

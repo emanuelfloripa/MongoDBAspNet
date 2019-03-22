@@ -19,12 +19,12 @@ namespace BlogMongoDBAPI.Services
             _db = dataBase.GetCollection<PostModel>("Posts");
         }
 
-        public List<PostModel> Get(ObjectId idBlog)
+        public List<PostModel> Get(string idBlog)
         {
             return _db.Find<PostModel>(post => post.idBlog == idBlog).ToList();
         }
 
-        public PostModel Get(MongoDB.Bson.ObjectId idBlog, string id)
+        public PostModel Get(string idBlog, string id)
         {
             var lista = _db.Find<PostModel>(post => (post.idBlog == idBlog) && (post.Id == id));
             return lista.First();
@@ -37,8 +37,8 @@ namespace BlogMongoDBAPI.Services
         /// <returns>O ID do Post inserido</returns>
         internal string Insert(string idBlog, PostModel p)
         {
-            ObjectId oid = new ObjectId(idBlog);
-            p.idBlog = oid;
+            //ObjectId oid = new ObjectId(idBlog);
+            p.idBlog = idBlog;
             _db.InsertOne(p);
             return p.Id;
         }
@@ -49,13 +49,13 @@ namespace BlogMongoDBAPI.Services
         /// <param name="id"></param>
         /// <param name="postIn"></param>
         /// <returns></returns>
-        internal bool Update(string idBlog, PostModel p)
-        {
-            ObjectId oid = new ObjectId(idBlog);
-            return Update(oid, p);
-        }
+        //internal bool Update(string idBlog, PostModel p)
+        //{
+        //    //ObjectId oid = new ObjectId(idBlog);
+        //    return Update(oid, p);
+        //}
 
-        internal bool Update(ObjectId idBlog, PostModel p)
+        internal bool Update(string idBlog, PostModel p)
         {
             var result = _db.ReplaceOne(post => post.Id == p.Id, p);
             return result.ModifiedCount == 1;

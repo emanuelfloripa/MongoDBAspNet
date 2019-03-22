@@ -52,8 +52,8 @@ namespace BlogMongoDBAPI
             //    clientSecret: "");
 
             //app.UseTwitterAuthentication(
-            //    consumerKey: "",
-            //    consumerSecret: "");
+            //    consumerKey: "kAHAlS9zNV0lA9du0frdWrTLY",
+            //    consumerSecret: "89J2TMArC0qaPJrbCvw24XbMunqnHQxAYh7eeMRJQq9JhZ66JL");
 
             //app.UseFacebookAuthentication(
             //    appId: "",

@@ -10,6 +10,7 @@ using System.Web.Http;
 
 namespace BlogMongoDBAPI.Controllers
 {
+    //[RoutePrefix("api/Blog/{:idBlog}/Post")]
     public class PostController : ApiController
     {
         private PostBlogService _service;
@@ -20,26 +21,29 @@ namespace BlogMongoDBAPI.Controllers
         }
 
         // GET: api/Post
-        public List<PostModel> Get(string idBlog)
+        [Route("api/Blog/{idBlog}/Get")]
+        public List<PostModel> Get([FromUri] string idBlog)
         {
-            return _service.Get(new ObjectId( idBlog));
+            return _service.Get(idBlog);
         }
 
         // GET: api/Post/5
-        public PostModel Get(string idBlog, string id)
+        [Route("api/Blog/{idBlog}/Get/{id}")]
+        public PostModel Get([FromUri] string idBlog,[FromUri] string id)
         {
-            return _service.Get(new ObjectId(idBlog), id);
+            return _service.Get(idBlog, id);
         }
 
         /// <summary>
-        /// 
+        /// Insere um registro de postagem no Blog
         /// </summary>
-        /// <param name="idBlog"></param>
-        /// <param name="p"></param>
+        /// <param name="idBlog">Id do blog.</param>
+        /// <param name="post">Conteúdo da postagem.</param>
         /// <returns>ID da postagem inserida</returns>
-        public string Post(string idBlog, PostModel p)
+        [Route("api/Blog/{idBlog}/Post")]
+        public string Post([FromUri] string idBlog, [FromBody] PostModel post)
         {
-            return _service.Insert(idBlog, p);
+            return _service.Insert(idBlog, post);
         }
 
         /// <summary>
@@ -48,7 +52,8 @@ namespace BlogMongoDBAPI.Controllers
         /// <param name="idBlog"></param>
         /// <param name="post"></param>
         /// <returns>Update realizado TRUE</returns>
-        public bool Put(string idBlog, PostModel post)
+        [Route("api/Blog/{idBlog}/Put")]
+        public bool Put([FromUri] string idBlog, [FromBody] PostModel post)
         {
             return _service.Update(idBlog, post);
         }
@@ -59,7 +64,8 @@ namespace BlogMongoDBAPI.Controllers
         /// <param name="idBlog"></param>
         /// <param name="idPost"></param>
         /// <returns>TRUE se achou e conseguiu deletar o registro</returns>
-        public bool Remove(string idBlog, string idPost)
+        [Route("api/Blog/{idBlog}/Remove/{idPost}")]
+        public bool Remove([FromUri] string idBlog,[FromUri] string idPost)
         {
             return _service.Remove(idPost);
         }

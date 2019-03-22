@@ -10,6 +10,7 @@ using BlogMongoDBAPI.Services;
 namespace BlogMongoDBAPI.Controllers
 {
     //[Authorize]
+    [RoutePrefix("api/Blog")]
     public class BlogController : ApiController
     {
 
@@ -24,12 +25,9 @@ namespace BlogMongoDBAPI.Controllers
             this.PostController = new PostController(conn);
         }
 
-        public List<BlogModel> Get()
+        public IEnumerable<BlogModel> Get()
         {
-            var blog = _blogService.Get();
-            //if (blog == null)
-            //    return NotFound();
-            return blog;
+            return _blogService.Get();
         }
 
         public BlogModel Get(string id)

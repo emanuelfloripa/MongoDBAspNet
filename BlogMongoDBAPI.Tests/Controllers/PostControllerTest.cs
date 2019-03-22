@@ -136,8 +136,7 @@ namespace BlogMongoDBAPI.Tests.Controllers
 
             var blog = GetOneBlog();
             var idBlog = blog._Id.ToString();
-            var i = blog.Posts.Count;
-            while (i < 2)
+            for (int i = 0; i < 3; i++)
             {
                 var p = CreateNewPost();
                 ctr.Post(idBlog, p);
