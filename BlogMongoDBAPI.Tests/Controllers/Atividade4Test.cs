@@ -16,15 +16,14 @@ namespace BlogMongoDBAPI.Tests.Controllers
         /// 1.O sistema deverá registrar o conteúdo de blogs a serem publicados na internet. 
         /// 2.Um Blog terá unicamente um usuário “proprietário”. 
         /// 3.Um Blog pode conter uma descrição simples indicando sua finalidade.
+        /// 8. O sistema deve suportar que um usuário anônimo crie uma nova conta. 
         /// </summary>
         [TestMethod]
-        public void CadastrarBlogComUmUsuario()
+        public void T1_CadastrarBlogComUmUsuario()
         {
-
-
-            var ownerName = "Emanuel Espíndola";
-            var login = "emanuel";
-            var password = "123";
+            var ownerName = "Teste1 VariasPostagens";
+            var login = "emanuel1";
+            var password = "1234";
             var description = "Blog teste para validação do projeto";
             BlogController blogCtr = new BlogController();
 
@@ -38,7 +37,8 @@ namespace BlogMongoDBAPI.Tests.Controllers
 
             var idBlog = blogCtr.Post(blog);
 
-            //Validação
+            // V A L I D A Ç Ã O ///////////////////////
+
             var leituraBlog = blogCtr.Get(idBlog);
 
             Assert.IsNotNull(leituraBlog);
@@ -53,14 +53,14 @@ namespace BlogMongoDBAPI.Tests.Controllers
         /// 5. Uma postagem pode conter uma estrutura dinâmica, contendo minimamente o título da postagem, o conteúdo, e a data e hora de publicação. 
         /// </summary>
         [TestMethod]
-        public void VariasPostagens()
+        public void T2_VariasPostagens()
         {
             // REQ4
 
-            var ownerName = "Emanuel Espíndola";
-            var login = "emanuel";
-            var password = "123";
-            var description = "Blog teste para validação do projeto";
+            var ownerName = "Teste2 VariasPostagens";
+            var login = "emanuel2";
+            var password = "1234";
+            var description = "T2 Blog teste para validação do projeto";
             BlogController blogCtr = new BlogController();
 
             var idBlog = blogCtr.Post(
@@ -81,11 +81,12 @@ namespace BlogMongoDBAPI.Tests.Controllers
                     {
                         IdBlog = idBlog,
                         Datahora = DateTime.Now,
-                        Titulo = DateTime.Now.ToLongTimeString() + "_Título"
+                        Titulo = "T3" + DateTime.Now.ToLongTimeString()
                     });
             }
 
-            // Validação
+            // V A L I D A Ç Ã O ///////////////////////
+
             var listaPosts = postCtr.Get(idBlog);
 
             Assert.IsNotNull(listaPosts);
@@ -93,7 +94,70 @@ namespace BlogMongoDBAPI.Tests.Controllers
             Assert.AreEqual(idBlog, listaPosts[99].IdBlog);
         }
 
+        /// <summary>
+        /// 6. O conteúdo de uma postagem pode opcionalmente ser fracionado um “seções”, 
+        ///    devendo estas estar ordenadas, e conter um “subtítulo” e seu conteúdo. 
+        /// 7. O conteúdo de uma seção, também pode conter outras “subseções”. 
+        /// </summary>
+        [TestMethod]
+        public void T3_SecoesAninhadas()
+        {
+            var ownerName = "Teste3 VariasPostagens";
+            var login = "emanuel3";
+            var password = "1234";
+            var description = "T3 Blog teste para validação do projeto";
+            BlogController blogCtr = new BlogController();
+            var idBlog = blogCtr.Post(
+                new BlogModel
+                {
+                    OwnerName = ownerName,
+                    Login = login,
+                    Password = password,
+                    Description = description
+                });
 
+            PostController postCtr = new PostController();
 
+            var postagem = new PostModel
+            {
+                IdBlog = idBlog,
+                Datahora = DateTime.Now,
+                Titulo = $"T3_Post[{DateTime.Now.ToLongTimeString()}]"
+            };
+
+            // 4 filhas com 3 netas em cada uma
+            for (int i = 0; i < 4; i++)
+            {
+                postagem.addSecao(new SecaoModel
+                {
+                    SubTitulo = $"T3_SecaoFilha[{i}]",
+                    Conteudo = "Teste3 com algum texto qualquer"
+                });
+
+                for (int j = 0; j < 3; j++)
+                {
+                    postagem.Secoes[i].addSecao(new SecaoModel
+                    {
+                        SubTitulo = $"T3_SecaoNeta[{i},{j}]",
+                        Conteudo = "Teste3 com algum texto qualquer"
+                    });
+                }
+            }
+
+            var idPost = postCtr.Post(idBlog, postagem);
+
+            // V A L I D A Ç Ã O ///////////////////////
+
+            // várias leituras diferentes
+            var secao_0_1 = postCtr.Get(idBlog, idPost).Secoes[0].Secoes[1];
+            var secao_2_2 = postCtr.Get(idBlog, idPost).Secoes[2].Secoes[2];
+            var secao_3_0 = postCtr.Get(idBlog, idPost).Secoes[3].Secoes[0];
+            // Conferindo os títulos gerados
+            Assert.IsNotNull(secao_0_1);
+            Assert.AreEqual("T3_SecaoNeta[0,1]", secao_0_1.SubTitulo);
+            Assert.AreEqual("T3_SecaoNeta[2,2]", secao_2_2.SubTitulo);
+            Assert.AreEqual("T3_SecaoNeta[3,0]", secao_3_0.SubTitulo);
+
+        }
     }
 }
