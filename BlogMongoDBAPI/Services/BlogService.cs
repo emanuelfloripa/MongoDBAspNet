@@ -33,10 +33,10 @@ namespace BlogMongoDBAPI.Services
             return _blogs.Find<BlogModel>(blog => blog._Id == id).FirstOrDefault();
         }
 
-        public BlogModel Insert(BlogModel blog)
+        public string Insert(BlogModel blog)
         {
             _blogs.InsertOne(blog);
-            return blog;
+            return blog._Id;
         }
 
         public int Update(string id, BlogModel blogIn)

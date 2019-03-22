@@ -108,7 +108,7 @@ namespace BlogMongoDBAPI.Tests.Controllers
             Assert.IsNotNull(blog._Id);
             var id1 = blog._Id;
 
-            controller.Delete(id1.ToString());
+            controller.Remove(id1.ToString());
 
             var b2 = controller.Get(id1.ToString());
             Assert.IsNull(b2);
