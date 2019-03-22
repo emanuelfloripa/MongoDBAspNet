@@ -21,12 +21,12 @@ namespace BlogMongoDBAPI.Services
 
         public List<PostModel> Get(string idBlog)
         {
-            return _db.Find<PostModel>(post => post.idBlog == idBlog).ToList();
+            return _db.Find<PostModel>(post => post.IdBlog == idBlog).ToList();
         }
 
         public PostModel Get(string idBlog, string id)
         {
-            var lista = _db.Find<PostModel>(post => (post.idBlog == idBlog) && (post.Id == id));
+            var lista = _db.Find<PostModel>(post => (post.IdBlog == idBlog) && (post.Id == id));
             return lista.First();
         }
 
@@ -38,7 +38,7 @@ namespace BlogMongoDBAPI.Services
         internal string Insert(string idBlog, PostModel p)
         {
             //ObjectId oid = new ObjectId(idBlog);
-            p.idBlog = idBlog;
+            p.IdBlog = idBlog;
             _db.InsertOne(p);
             return p.Id;
         }

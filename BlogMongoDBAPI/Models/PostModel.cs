@@ -42,9 +42,9 @@ namespace BlogMongoDBAPI.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        [BsonElement("idBlog")]
+        [BsonElement("IdBlog")]
         [BsonRequired]
-        public string idBlog { get; set; }
+        public string IdBlog { get; set; }
 
         [BsonElement("Titulo")]
         [BsonRequired]
