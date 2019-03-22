@@ -20,15 +20,24 @@ namespace BlogMongoDBAPI.Controllers
             _service = new PostBlogService(conn);
         }
 
-        // GET: api/Post
-        [Route("api/Blog/{idBlog}/Get")]
+        /// <summary>
+        /// Retorna um
+        /// </summary>
+        /// <param name="idBlog"></param>
+        /// <returns></returns>
+        [Route("api/Blog/{idBlog}/Post")]
         public List<PostModel> Get([FromUri] string idBlog)
         {
             return _service.Get(idBlog);
         }
 
-        // GET: api/Post/5
-        [Route("api/Blog/{idBlog}/Get/{id}")]
+        /// <summary>
+        /// Retorna um registro de postagem
+        /// </summary>
+        /// <param name="idBlog">ID do blog.</param>
+        /// <param name="id">ID da postagem.</param>
+        /// <returns>JSON de um PostModel</returns>
+        [Route("api/Blog/{idBlog}/Post/{id}")]
         public PostModel Get([FromUri] string idBlog,[FromUri] string id)
         {
             return _service.Get(idBlog, id);
@@ -52,7 +61,7 @@ namespace BlogMongoDBAPI.Controllers
         /// <param name="idBlog"></param>
         /// <param name="post"></param>
         /// <returns>Update realizado TRUE</returns>
-        [Route("api/Blog/{idBlog}/Put")]
+        [Route("api/Blog/{idBlog}/Post")]
         public bool Put([FromUri] string idBlog, [FromBody] PostModel post)
         {
             return _service.Update(idBlog, post);
@@ -64,15 +73,11 @@ namespace BlogMongoDBAPI.Controllers
         /// <param name="idBlog"></param>
         /// <param name="idPost"></param>
         /// <returns>TRUE se achou e conseguiu deletar o registro</returns>
-        [Route("api/Blog/{idBlog}/Remove/{idPost}")]
+        [Route("api/Blog/{idBlog}/Post/{idPost}")]
         public bool Remove([FromUri] string idBlog,[FromUri] string idPost)
         {
             return _service.Remove(idPost);
         }
 
-        //public string AddSecao(PostModel post, SecaoModel secao)
-        //{
-        //    return _service.AddSecao(post, secao);
-        //}
     }
 }
