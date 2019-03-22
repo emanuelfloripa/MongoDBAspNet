@@ -20,7 +20,7 @@ namespace BlogMongoDBAPI.Tests.Controllers
 
             BlogModel blog = new BlogModel
             {
-                Owner = "Emanuel Espíndola",
+                OwnerName = "Emanuel Espíndola",
                 Password = "123",
                 Description = "Blog teste para validação do projeto",
             };

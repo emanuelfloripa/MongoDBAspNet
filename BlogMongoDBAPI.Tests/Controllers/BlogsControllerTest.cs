@@ -28,7 +28,7 @@ namespace BlogMongoDBAPI.Tests.Controllers
             Assert.IsTrue(blogs.Count() > 0);
 
             var b1 = blogs.First();
-            Assert.IsTrue(b1.Owner.Length > 0);
+            Assert.IsTrue(b1.OwnerName.Length > 0);
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ namespace BlogMongoDBAPI.Tests.Controllers
         {
             return new BlogModel
             {
-                Owner = "Teste" + DateTime.Now.ToString("yyMMdd-hhmmss"),
+                OwnerName = "Teste" + DateTime.Now.ToString("yyMMdd-hhmmss"),
                 Description = "descrição " + DateTime.Now.ToString("yyMMdd-hhmmss"),
                 Password = "!@#$!@#!@#$%!#@$%!#@$#@$"
                 //Posts = new List<PostModel> {
@@ -85,7 +85,7 @@ namespace BlogMongoDBAPI.Tests.Controllers
 
             var b2 = CreateNewBlog();
             var owner = "zzzzzzzz" + DateTime.Now.ToLongTimeString();
-            b2.Owner = owner;
+            b2.OwnerName = owner;
             b2.Description = "zzzzzzzz" + DateTime.Now.ToLongTimeString();
 
             var count = controller.Put(id1.ToString(), b2);
@@ -93,7 +93,7 @@ namespace BlogMongoDBAPI.Tests.Controllers
 
             var b3 = controller.Get(id1.ToString());
             Assert.AreEqual(b1._Id, b2._Id);
-            Assert.AreNotEqual(b1.Owner, b3.Owner);
+            Assert.AreNotEqual(b1.OwnerName, b3.OwnerName);
         }
 
         [TestMethod]

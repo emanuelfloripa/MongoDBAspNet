@@ -24,7 +24,11 @@ namespace BlogMongoDBAPI.Models
 
         [BsonElement("Owner")]
         [BsonRequired]
-        public string Owner { get; set; }
+        public string OwnerName { get; set; }
+
+        [BsonElement("Login")]
+        [BsonRequired]
+        public string Login { get; set; }
 
         [BsonElement("Password")]
         [BsonRequired]
