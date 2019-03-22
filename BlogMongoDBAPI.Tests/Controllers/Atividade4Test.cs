@@ -22,7 +22,7 @@ namespace BlogMongoDBAPI.Tests.Controllers
         public void T1_CadastrarBlogComUmUsuario()
         {
             var ownerName = "Teste1 VariasPostagens";
-            var login = "emanuel1";
+            var login = $"emanuel1_{DateTime.Now.ToString("hhMMss")}";
             var password = "1234";
             var description = "Blog teste para validação do projeto";
             BlogController blogCtr = new BlogController();
@@ -58,7 +58,7 @@ namespace BlogMongoDBAPI.Tests.Controllers
             // REQ4
 
             var ownerName = "Teste2 VariasPostagens";
-            var login = "emanuel2";
+            var login = $"emanuel2_{DateTime.Now.ToString("hhMMss")}";
             var password = "1234";
             var description = "T2 Blog teste para validação do projeto";
             BlogController blogCtr = new BlogController();
@@ -103,7 +103,7 @@ namespace BlogMongoDBAPI.Tests.Controllers
         public void T3_SecoesAninhadas()
         {
             var ownerName = "Teste3 VariasPostagens";
-            var login = "emanuel3";
+            var login = $"emanuel3_{DateTime.Now.ToString("hhMMss")}";
             var password = "1234";
             var description = "T3 Blog teste para validação do projeto";
             BlogController blogCtr = new BlogController();
@@ -157,6 +157,32 @@ namespace BlogMongoDBAPI.Tests.Controllers
             Assert.AreEqual("T3_SecaoNeta[0,1]", secao_0_1.SubTitulo);
             Assert.AreEqual("T3_SecaoNeta[2,2]", secao_2_2.SubTitulo);
             Assert.AreEqual("T3_SecaoNeta[3,0]", secao_3_0.SubTitulo);
+
+        }
+
+        /// <summary>
+        /// 9. O sistema deve suportar que o usuário anônimo, com conta criada, se autentique (login e senha). 
+        /// </summary>
+        [TestMethod]
+        public void T4_Login()
+        {
+            var ownerName = "Teste4 VariasPostagens";
+            var login = "emanuel4";
+            var password = "1234";
+            var description = "T4 Blog teste para validação do projeto";
+            BlogController blogCtr = new BlogController();
+            var idBlog = blogCtr.Post(new BlogModel
+            {
+                OwnerName = ownerName,
+                Login = login,
+                Password = password,
+                Description = description
+            });
+
+            //var tokenInvalido = blogCtr.Login(idBlog, "emanuel4", "senhaInvalida");
+            //var token = blogCtr.Login(idBlog, "emanuel4", "1234");
+
+
 
         }
     }
