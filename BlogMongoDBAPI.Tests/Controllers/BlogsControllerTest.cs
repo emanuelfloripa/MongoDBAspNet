@@ -69,8 +69,7 @@ namespace BlogMongoDBAPI.Tests.Controllers
         [TestMethod]
         public void PostController()
         {
-            BlogController blog = new BlogController();
-            PostController post = blog.PostController;
+            PostController post = new PostController();
             Assert.IsNotNull(post);
         }
 

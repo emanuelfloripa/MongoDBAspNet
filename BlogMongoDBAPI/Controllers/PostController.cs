@@ -15,8 +15,9 @@ namespace BlogMongoDBAPI.Controllers
     {
         private PostBlogService _service;
 
-        public PostController(string conn)
+        public PostController()
         {
+            var conn = System.Configuration.ConfigurationManager.ConnectionStrings[Consts.ConnStringName].ConnectionString;
             _service = new PostBlogService(conn);
         }
 

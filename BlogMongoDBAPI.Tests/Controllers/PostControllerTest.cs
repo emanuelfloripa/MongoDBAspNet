@@ -24,8 +24,7 @@ namespace BlogMongoDBAPI.Tests.Controllers
         /// <returns></returns>
         private PostController Controller()
         {
-            var blog = new BlogController();
-            return blog.PostController;
+            return new PostController();
         }
 
         /// <summary>

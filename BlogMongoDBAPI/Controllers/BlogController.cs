@@ -16,13 +16,10 @@ namespace BlogMongoDBAPI.Controllers
 
         private readonly BlogService _blogService;
 
-        public PostController PostController { get; private set; }
-
         public BlogController()
         {
             var conn = System.Configuration.ConfigurationManager.ConnectionStrings[Consts.ConnStringName].ConnectionString;
-            _blogService = new BlogService(conn);
-            this.PostController = new PostController(conn);
+            _blogService = new BlogService(conn);            
         }
 
         public IEnumerable<BlogModel> Get()
