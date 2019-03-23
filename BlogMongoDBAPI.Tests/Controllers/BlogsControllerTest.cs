@@ -17,6 +17,16 @@ namespace BlogMongoDBAPI.Tests.Controllers
 
 
 
+
+        [TestMethod]
+        public void Post()
+        {
+            BlogController controller = new BlogController();
+            var blog = CreateNewBlog();
+            controller.Post(blog);
+        }
+
+
         [TestMethod]
         public void Get()
         {
@@ -25,7 +35,8 @@ namespace BlogMongoDBAPI.Tests.Controllers
 
             var blogs = controller.Get();
             Assert.IsNotNull(blogs);
-            Assert.IsTrue(blogs.Count() > 0);
+            if (blogs.Count() == 0)
+                Assert.Inconclusive("O banco de dados está vazio. Execute o teste novamente.");
 
             var b1 = blogs.First();
             Assert.IsTrue(b1.OwnerName.Length > 0);
@@ -43,14 +54,6 @@ namespace BlogMongoDBAPI.Tests.Controllers
             var id1 = b1._Id;
             var b2 = controller.Get(id1.ToString());
             Assert.IsTrue(b2._Id == b1._Id);
-        }
-
-        [TestMethod]
-        public void Post()
-        {
-            BlogController controller = new BlogController();
-            var blog = CreateNewBlog();
-            controller.Post(blog);
         }
 
         public static BlogModel CreateNewBlog()
