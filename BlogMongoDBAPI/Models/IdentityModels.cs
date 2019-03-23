@@ -23,8 +23,10 @@ namespace BlogMongoDBAPI.Models
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+            //DefaultConnection
+            //BlogStoreDB
         }
-        
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
