@@ -71,6 +71,11 @@ namespace BlogMongoDBAPI.Controllers
         {
             _blogService.Remove(id);
         }
+
+        public string Login(string idBlog, string v1, string v2)
+        {
+            return _blogService.Login(idBlog, v1, v2);
+        }
     }
 }
 

@@ -55,5 +55,14 @@ namespace BlogMongoDBAPI.Services
         {
             _blogs.DeleteOne(blog => blog._Id == id);
         }
+
+        internal string Login(string idBlog, string v1, string v2)
+        {
+            var blog = _blogs.Find(b => (b._Id == idBlog) & (b.Login == v1) & (b.Password == v2)).FirstOrDefault();
+            if (blog == null)
+                return "";
+            else
+                return ObjectId.GenerateNewId().ToString();
+        }
     }
 }

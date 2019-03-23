@@ -167,7 +167,7 @@ namespace BlogMongoDBAPI.Tests.Controllers
         public void T4_Login()
         {
             var ownerName = "Teste4 VariasPostagens";
-            var login = "emanuel4";
+            var login = $"emanuel4{DateTime.Now.ToString("hhMMss")}";
             var password = "1234";
             var description = "T4 Blog teste para validação do projeto";
             BlogController blogCtr = new BlogController();
@@ -179,11 +179,19 @@ namespace BlogMongoDBAPI.Tests.Controllers
                 Description = description
             });
 
-            //var tokenInvalido = blogCtr.Login(idBlog, "emanuel4", "senhaInvalida");
-            //var token = blogCtr.Login(idBlog, "emanuel4", "1234");
+            // V A L I D A Ç Ã O ///////////////////////
 
+            var tokenInvalido = blogCtr.Login(idBlog, login, "senhaInvalida");
+            var token = blogCtr.Login(idBlog, login, "1234");
 
-
+            Assert.AreEqual("", tokenInvalido);
+            Assert.IsTrue(token.Length == 24);
         }
+
+        //10. A criação de blogs só será possível por usuários autenticados.
+        //11. Todos os blogs serão públicos (acessíveis a partir da tela inicial do sistema mesmo por usuários não autenticados). 
+        //12. A tela inicial do sistema deve apresentar todos os Blogs existentes, em ordem descendente pela data do último post.
+        //13. Ao acessar um Blog deve ser relacionado todos os posts em ordem decrescente da data de publicação.
+        //14. O sistema deve apresentar todos os dados de um post, destacando, se houver, o título de cada seção ou subseção.
     }
 }
